@@ -1,12 +1,10 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   schedule:
-     - cron: '0 10 * * *'
+    - cron: '0 15 * * *' ## UNCOMMENT THIS WHEN READY FOR AUTOMATION
   workflow_dispatch:
 
 
-name: inflow_tmwb
+name: spcond_AR_abp ## POPULATE THIS WITH YOUR MODEL ID
 
 jobs:
   docker:
@@ -16,16 +14,15 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      EDI_ACCESS_KEY: ${{ secrets.EDI_ACESS_KEY }} 
     steps:
       - uses: actions/checkout@v3
 
       - name: Install
         shell: Rscript {0}
         run: |
-          install.packages(c("GSODR","elevatr","sf","raster","soilDB","pacman","foreign","zoo","rMR","dataRetrieval"))
+          install.packages(c("zoo")) ## POPULATE THIS WITH ANY SPECIFIC PACKAGES YOU NEED
 
       - name: Generate forecasts
         shell: Rscript {0}
         run: |
-          source("model_code/inflow_tmwb/tmwb_inflow.R")
+          source("model_code/spcond_ar_abp/model_workflow.R") ## POPULATE THIS WITH THE PATH TO YOUR CODE
